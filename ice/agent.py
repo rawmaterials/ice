@@ -10,6 +10,7 @@ from ice.agents.openai import OpenAIAgent
 from ice.agents.openai_reasoning import OpenAIReasoningAgent
 from ice.agents.ought_inference import OughtInferenceAgent
 from ice.agents.squad import SquadAgent
+from ice.agents.wolfram import WolframAgent
 from ice.mode import Mode
 
 # TODO: Come up with a more reasonable way to make agents optional/pluggable.
@@ -37,6 +38,7 @@ MACHINE_AGENTS = {
         origin_model_name="bigscience/T0_3B",
         lora_weights_path="ice/nn/weights/adherence_tfew_multi_lite_3B.pt",
     ),
+    "wolfram": lambda: WolframAgent(),
 }
 
 
