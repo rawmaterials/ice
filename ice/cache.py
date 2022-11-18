@@ -2,9 +2,9 @@
 Decorator for caching function results to disk
 """
 import asyncio
-import functools
 import inspect
 
+from functools import wraps
 from pathlib import Path
 
 from ice.settings import CACHE_DIR
@@ -19,7 +19,7 @@ def diskcache(cache_dir: Path = CACHE_DIR):
         return cache, key
 
     def decorator(func):
-        @functools.wraps(func)
+        @wraps(func)
         def sync_wrapper(*args, **kwargs):
             cache, key = get_cache_and_key(func, *args, **kwargs)
             if key in cache:
@@ -28,7 +28,7 @@ def diskcache(cache_dir: Path = CACHE_DIR):
             cache[key] = result
             return result
 
-        @functools.wraps(func)
+        @wraps(func)
         async def async_wrapper(*args, **kwargs):
             cache, key = get_cache_and_key(func, *args, **kwargs)
             if key in cache:

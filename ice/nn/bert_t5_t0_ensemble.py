@@ -1,7 +1,7 @@
-import functools
 import re
 import time
 
+from functools import cache
 from enum import IntEnum
 from typing import Tuple
 
@@ -21,7 +21,7 @@ from ice.paper import split_sentences
 log = get_logger()
 
 
-@functools.cache
+@cache
 def get_device() -> torch.device:
     device_name = "cuda" if torch.cuda.is_available() else "cpu"
     if device_name == "cpu":
@@ -30,7 +30,7 @@ def get_device() -> torch.device:
     return torch.device(device_name)
 
 
-@functools.cache
+@cache
 def load_T5() -> Tuple[T5TokenizerFast, T5ForConditionalGeneration]:
     device = get_device()
     T5_tokenizer = AutoTokenizer.from_pretrained("castorini/monot5-base-msmarco-10k")
@@ -41,7 +41,7 @@ def load_T5() -> Tuple[T5TokenizerFast, T5ForConditionalGeneration]:
     return T5_tokenizer, T5_model
 
 
-@functools.cache
+@cache
 def load_BART() -> Tuple[BartTokenizerFast, BartForConditionalGeneration]:
     device = get_device()
     BART_tokenizer = BartTokenizerFast.from_pretrained("facebook/bart-large-mnli")
@@ -52,7 +52,7 @@ def load_BART() -> Tuple[BartTokenizerFast, BartForConditionalGeneration]:
     return BART_tokenizer, BART_model
 
 
-@functools.cache
+@cache
 def load_T0(
     model_name="bigscience/T0_3B",
 ) -> Tuple[T5TokenizerFast, T5ForConditionalGeneration]:
