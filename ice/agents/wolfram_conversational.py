@@ -43,12 +43,7 @@ class WolframConversationalAgent(Agent):
         if "error" in response:
             raise Exception(response["error"])
 
-        if "conversationID" in response:
-            self.conversation_id = response["conversationID"]
-        if "host" in response:
-            self.host = response["host"]
-        if "s" in response:
-            self.s = response["s"]
+        self._extract_parameters_for_next_question(response)
 
         answer = self._extract_answer(response)
         if verbose:
@@ -59,27 +54,40 @@ class WolframConversationalAgent(Agent):
         self,
         question,
         units: UNITS | None = None,
-        **kwargs
     ) -> dict:
         """Send an answer request to the Wolfram|Alpha API with the given question and parameters."""
-        if self.geolocation is not None:
-            kwargs["geolocation"] = self.geolocation
-        if self.ip is not None:
-            kwargs["ip"] = self.ip
-        if self.conversation_id is not None:
-            kwargs["conversationid"] = self.conversation_id
-        if self.s is not None:
-            kwargs["s"] = self.s
-        if units is not None:
-            kwargs["units"] = units
+
+        parameters = self._get_parameters(units=units)
 
         response = await wolfram_answer(
             question=question,
             endpoint=API_ENDPOINT,
             host=self.host,
-            **kwargs
+            **parameters
         )
         return response
+
+    def _extract_parameters_for_next_question(self, response: dict):
+        if "conversationID" in response:
+            self.conversation_id = response["conversationID"]
+        if "host" in response:
+            self.host = response["host"]
+        if "s" in response:
+            self.s = response["s"]
+
+    def _get_parameters(self, units: UNITS | None = None) -> dict:
+        parameters = {}
+        if self.geolocation is not None:
+            parameters["geolocation"] = self.geolocation
+        if self.ip is not None:
+            parameters["ip"] = self.ip
+        if self.conversation_id is not None:
+            parameters["conversationid"] = self.conversation_id
+        if self.s is not None:
+            parameters["s"] = self.s
+        if units is not None:
+            parameters["units"] = units
+        return parameters
 
     def _extract_answer(self, response: dict) -> str:
         """Extract the answer text from the response."""
