@@ -10,15 +10,23 @@ from ice.environment import env
 log = get_logger()
 
 
-API_ENDPOINT = "result"
+API_ENDPOINT = "conversation.jsp"
 UNITS = Literal["metric", "imperial"]
 
 
-class WolframAgent(Agent):
-    """An agent that uses the Wolfram|Alpha Short Answers API to generate answers."""
+class WolframConversationalAgent(Agent):
+    """An agent that uses the Wolfram|Alpha Conversational API to generate answers."""
 
-    def __init__(self, timeout: float | None = None):
-        self.timeout = timeout
+    def __init__(
+        self,
+        geolocation: str | None = None,
+        ip: str | None = None,
+    ):
+        self.geolocation = geolocation
+        self.ip = ip
+        self.conversation_id = None
+        self.host = None
+        self.s = None
 
     async def answer(
         self,
@@ -27,10 +35,21 @@ class WolframAgent(Agent):
         units: UNITS | None = None,
         verbose: bool = False,
     ) -> str:
-        """Generate a short answer to the given question."""
+        """Generate an answer to the given question."""
         if verbose:
             self._print_markdown(question)
         response = await self._answer(question, units=units)
+
+        if "error" in response:
+            raise Exception(response["error"])
+
+        if "conversationID" in response:
+            self.conversation_id = response["conversationID"]
+        if "host" in response:
+            self.host = response["host"]
+        if "s" in response:
+            self.s = response["s"]
+
         answer = self._extract_answer(response)
         if verbose:
             self._print_markdown(answer)
@@ -42,15 +61,22 @@ class WolframAgent(Agent):
         units: UNITS | None = None,
         **kwargs
     ) -> dict:
-        """Send a request to the Wolfram|Alpha API with the given question and parameters."""
-        if self.timeout is not None:
-            kwargs["timeout"] = self.timeout
+        """Send an answer request to the Wolfram|Alpha API with the given question and parameters."""
+        if self.geolocation is not None:
+            kwargs["geolocation"] = self.geolocation
+        if self.ip is not None:
+            kwargs["ip"] = self.ip
+        if self.conversation_id is not None:
+            kwargs["conversationid"] = self.conversation_id
+        if self.s is not None:
+            kwargs["s"] = self.s
         if units is not None:
             kwargs["units"] = units
 
         response = await wolfram_answer(
             question=question,
             endpoint=API_ENDPOINT,
+            host=self.host,
             **kwargs
         )
         return response

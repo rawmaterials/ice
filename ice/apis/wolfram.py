@@ -38,6 +38,7 @@ def log_attempt_number(retry_state):
 
 RETRYABLE_STATUS_CODES = {408, 429, 502, 503, 504}
 WOLFRAM_BASE_URL = "http://api.wolframalpha.com/v1/"
+WOLFRAM_CONTINUATION_URL_TEMPLATE = "http://{host}/api/v1"
 
 
 def is_retryable_HttpError(e: BaseException) -> bool:
@@ -57,20 +58,34 @@ def is_retryable_HttpError(e: BaseException) -> bool:
     after=log_attempt_number,
 )
 async def _post(
+    host: str,
+    endpoint: str,
     query_string: str,
     timeout: float | None = None
 ) -> dict:
     """Send a POST request to the Wolfram|Alpha API and return the JSON response."""
 
     async with httpx.AsyncClient() as client:
+        host_url = WOLFRAM_BASE_URL \
+            if host is None \
+            else WOLFRAM_CONTINUATION_URL_TEMPLATE.replace("{host}", host)
         response = await client.post(
-            f"{WOLFRAM_BASE_URL}/result?{query_string}",
+            f"{host_url}/{endpoint}?{query_string}",
             timeout=timeout,
         )
         if response.status_code == 429:
             raise RateLimitError(response)
+        if response.status_code == 400:
+            raise ValueError("Must provide a valid value for the input parameter")
+        if response.status_code == 501:
+            raise KeyError("Must provide an input parameter")
         response.raise_for_status()
-        return response.text
+        if endpoint == "result":
+            return {
+                "result": response.text
+            }
+        else:
+            return response.json()
 
 
 def _make_query_string(question: str, **kwargs) -> str:
@@ -84,6 +99,8 @@ def _make_query_string(question: str, **kwargs) -> str:
 @diskcache()
 async def wolfram_answer(
     question: str,
+    endpoint: str,
+    host: str | None = None,
     cache_id: int = 0,  # for repeated non-deterministic sampling using caching
     **kwargs,
 ) -> dict:
@@ -91,5 +108,7 @@ async def wolfram_answer(
     cache_id  # unused
     query_string = _make_query_string(question, **kwargs)
     return await _post(
-        query_string,
+        host=host,
+        endpoint=endpoint,
+        query_string=query_string,
     )

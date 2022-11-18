@@ -11,6 +11,7 @@ from ice.agents.openai_reasoning import OpenAIReasoningAgent
 from ice.agents.ought_inference import OughtInferenceAgent
 from ice.agents.squad import SquadAgent
 from ice.agents.wolfram import WolframAgent
+from ice.agents.wolfram_conversational import WolframConversationalAgent
 from ice.mode import Mode
 
 # TODO: Come up with a more reasonable way to make agents optional/pluggable.
@@ -39,6 +40,7 @@ MACHINE_AGENTS = {
         lora_weights_path="ice/nn/weights/adherence_tfew_multi_lite_3B.pt",
     ),
     "wolfram": lambda: WolframAgent(),
+    "wolfram-conversational": lambda: WolframConversationalAgent(),
 }
 
 
