@@ -4,18 +4,19 @@ import os.path
 from typing import Type
 
 from ice.environment import env
+from ice.mode import Mode
 from ice.recipe import Recipe
 from ice.recipes import get_recipe_classes
 
 
-def is_filename(name: str) -> bool:
+def _is_filename(name: str) -> bool:
     """
     Check if name is a valid filename with a .py extension
     """
     return os.path.isfile(name) and name.endswith(".py")
 
 
-def load_recipe_class_from_file(filename: str) -> Type[Recipe]:
+def _load_recipe_class_from_file(filename: str) -> Type[Recipe]:
     # Load the recipe class from the specified file using importlib
     spec = importlib.util.spec_from_file_location("recipe_module", filename)
     if spec is None:
@@ -40,7 +41,7 @@ def load_recipe_class_from_file(filename: str) -> Type[Recipe]:
     return recipe_class
 
 
-def load_recipe_class_by_name(recipe_name: str) -> Type[Recipe]:
+def _load_recipe_class_by_name(recipe_name: str) -> Type[Recipe]:
     recipe_classes = get_recipe_classes()
     try:
         recipe_class = next(
@@ -55,7 +56,7 @@ def load_recipe_class_by_name(recipe_name: str) -> Type[Recipe]:
     return recipe_class
 
 
-async def ask_user_for_recipe_class() -> Type[Recipe]:
+async def _ask_user_for_recipe_class() -> Type[Recipe]:
     recipe_classes = get_recipe_classes()
     recipe_names = [r.__name__ for r in recipe_classes]
     recipe_name = await env().select("Recipe", recipe_names)
@@ -63,12 +64,20 @@ async def ask_user_for_recipe_class() -> Type[Recipe]:
     return recipe_class
 
 
-async def select_recipe_class(*, recipe_name: str | None = None) -> Type[Recipe]:
+async def _select_recipe_class(*, recipe_name: str | None = None) -> Type[Recipe]:
     if recipe_name is not None:
-        if is_filename(recipe_name):
-            recipe_class = load_recipe_class_from_file(recipe_name)
+        if _is_filename(recipe_name):
+            recipe_class = _load_recipe_class_from_file(recipe_name)
         else:
-            recipe_class = load_recipe_class_by_name(recipe_name)
+            recipe_class = _load_recipe_class_by_name(recipe_name)
     else:
-        recipe_class = await ask_user_for_recipe_class()
+        recipe_class = await _ask_user_for_recipe_class()
     return recipe_class
+
+
+async def get_recipe(recipe_name: str | None, mode: Mode) -> Recipe:
+    """
+    Get the recipe instance based on the user input or selection.
+    """
+    recipe_class = await _select_recipe_class(recipe_name=recipe_name)
+    return recipe_class(mode)
