@@ -79,5 +79,5 @@ class ResultsWriter:
                 file=output_file,
             )
 
-            evaluation_report.make_dashboard_row_df()
-            evaluation_report.make_experiments_evaluation_df()
+            evaluation_report.make_and_write_dashboard_row_df()
+            evaluation_report.make_and_write_experiments_evaluation_df()

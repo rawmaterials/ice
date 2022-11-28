@@ -59,9 +59,9 @@ async def summarize_experiment_evals(results_file: str):
         )
 
         experiment_evaluations_dfs.append(
-            evaluation_report.make_experiments_evaluation_df()
+            evaluation_report.make_and_write_experiments_evaluation_df()
         )
-        dashboard_row_dfs.append(evaluation_report.make_dashboard_row_df())
+        dashboard_row_dfs.append(evaluation_report.make_and_write_dashboard_row_df())
 
     if len(eval_dfs) > 1:
         dashboard_rows_df = pd.concat(dashboard_row_dfs)

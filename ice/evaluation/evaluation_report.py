@@ -334,9 +334,7 @@ class EvaluationReport(BaseModel):
     def __str__(self) -> str:
         return "\n".join(str(e) for e in self.to_rich_elements())
 
-    def make_dashboard_row_df(self):
-        CSVS_PATH.mkdir(parents=True, exist_ok=True)
-
+    def make_and_write_dashboard_row_df(self) -> pd.DataFrame:
         questions = self.questions_str()
         row = {
             "Questions": questions,
@@ -386,15 +384,10 @@ class EvaluationReport(BaseModel):
             ] = classification_summary.num_evaluated
 
         df = pd.DataFrame([row])
-        df.to_csv(
-            CSVS_PATH / f"dashboard_row {start_time} {questions}.csv",
-            index=False,
-        )
+        self._write_df(df, "dashboard_row")
         return df
 
-    def make_experiments_evaluation_df(self):
-        CSVS_PATH.mkdir(parents=True, exist_ok=True)
-
+    def make_and_write_experiments_evaluation_df(self) -> pd.DataFrame:
         rows = []
         questions = self.questions_str()
 
@@ -438,8 +431,15 @@ class EvaluationReport(BaseModel):
 
             rows.append(row)
         df = pd.DataFrame(rows)
+        self._write_df(df, "experiments_evaluation")
+        return df
+
+    def _write_df(self, df: pd.DataFrame, filename: str):
+        CSVS_PATH.mkdir(parents=True, exist_ok=True)
+
+        questions = self.questions_str()
+
         df.to_csv(
-            CSVS_PATH / f"experiments_evaluation {start_time} {questions}.csv",
+            CSVS_PATH / f"{filename} {start_time} {questions}.csv",
             index=False,
         )
-        return df
