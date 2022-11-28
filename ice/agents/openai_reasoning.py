@@ -2,9 +2,9 @@ from collections import Counter
 
 from structlog.stdlib import get_logger
 
+from ice.agents.apis.openai import openai_complete
 from ice.agents.base import Agent
 from ice.agents.base import Stop
-from ice.apis.openai import openai_complete
 
 log = get_logger()
 

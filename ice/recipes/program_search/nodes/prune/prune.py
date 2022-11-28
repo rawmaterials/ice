@@ -3,7 +3,7 @@ from collections.abc import Sequence
 
 from structlog.stdlib import get_logger
 
-from ice.apis.openai import openai_complete
+from ice.agents.openai import OpenAIAgent
 from ice.recipe import recipe
 from ice.recipes.program_search.nodes.prune.prompts import EXAMPLE_SEPARATOR
 from ice.recipes.program_search.nodes.prune.prompts import (
@@ -40,7 +40,7 @@ def logprobs_greater_than_none(
 
 async def prune(question: str, texts: list[str], max_to_keep: int) -> list[str]:
     prompt = make_pruning_prompt(question=question, existing=texts)
-    response = await openai_complete(
+    response = await OpenAIAgent().complete_with_full_response(
         prompt=prompt, max_tokens=80, logprobs=100, echo=False, stop=EXAMPLE_SEPARATOR
     )
     selection_probs = get_pruned_selections_via_logprobs(
@@ -71,7 +71,7 @@ async def prune_with_reasoning(
         prompt = make_pruning_with_reasoning_prompt(
             question=question, existing=[t[0] for t in texts_with_perplexities]
         )
-    response = await openai_complete(
+    response = await OpenAIAgent().complete_with_full_response(
         prompt=prompt,
         max_tokens=4000 - n_tokens(prompt),
         logprobs=100,
@@ -86,7 +86,7 @@ async def prune_with_reasoning(
             + completion.rstrip()
             + "\n\nWhich excerpts answer the question, from most to least"
         )
-        response = await openai_complete(
+        response = await OpenAIAgent().complete_with_full_response(
             prompt=prompt,
             max_tokens=4090 - n_tokens(prompt),
             logprobs=100,

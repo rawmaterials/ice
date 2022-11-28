@@ -1,7 +1,7 @@
 from collections.abc import Sequence
 from typing import cast
 
-from ice.apis.openai import openai_complete
+from ice.agents.openai import OpenAIAgent
 from ice.formatter.transform.dependent import CountWord
 from ice.formatter.transform.dependent import plural_transform
 from ice.paper import Paper
@@ -171,11 +171,11 @@ async def name_experiments(
 @trace
 async def convert_answer_to_standardized_format(answer: str) -> str:
     standardized_answer: str = (
-        await openai_complete(
+        await OpenAIAgent().complete(
             prompt=make_quick_list_prompt(answer),
             stop="\n\nAnswer:",
         )
-    )["choices"][0]["text"]
+    )
     return standardized_answer
 
 

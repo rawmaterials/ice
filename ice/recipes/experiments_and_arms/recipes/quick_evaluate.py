@@ -1,4 +1,4 @@
-from ice.apis.openai import openai_complete
+from ice.agents.openai import OpenAIAgent
 from ice.recipe import recipe
 from ice.recipes.experiments_and_arms.prompts.quick_evaluate import get_grade
 from ice.recipes.experiments_and_arms.prompts.quick_evaluate import (
@@ -20,7 +20,7 @@ async def quick_evaluate(
         tuple[str, str]: The evaluation and the letter grade.
     """
     prompt, stop_seq = make_quick_eval_prompt(gs, generated)
-    response = (await openai_complete(prompt, stop=stop_seq))["choices"][0]["text"]
+    response = await OpenAIAgent().complete(prompt, stop=stop_seq)
     return response, get_grade(response)
 
 

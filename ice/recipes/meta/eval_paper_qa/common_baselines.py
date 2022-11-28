@@ -2,7 +2,7 @@ from collections.abc import Callable
 from collections.abc import Sequence
 from functools import partial
 
-from ice.apis.openai import TooLongRequestError
+from ice.agents.openai import TooLongRequestError
 from ice.formatter.transform.value import numbered_list
 from ice.paper import Paper
 from ice.recipe import recipe

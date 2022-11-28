@@ -4,9 +4,10 @@ from typing import Any
 
 from structlog.stdlib import get_logger
 
+from ice.agents.apis.openai import openai_complete
+from ice.agents.apis.openai import TooLongRequestError as TooLongRequestError  # Explicit re-export
 from ice.agents.base import Agent
 from ice.agents.base import Stop
-from ice.apis.openai import openai_complete
 from ice.environment import env
 from ice.utils import longest_common_prefix
 
@@ -85,16 +86,29 @@ class OpenAIAgent(Agent):
 
         return rel_probs, None
 
+    async def complete_with_full_response(
+        self,
+        *,
+        prompt: str,
+        stop: Stop = None,
+        verbose: bool = False,
+        **kwargs,
+    ) -> dict:
+        """Generate an answer to a question. Returns full OpenAI API response."""
+        if verbose:
+            self._print_markdown(prompt)
+        response = await self._complete(prompt, stop=stop, **kwargs)
+        if verbose:
+            self._print_markdown(_extract_completion(response))
+        return response
+
     async def _complete(self, prompt, **kwargs) -> dict:
         """Send a completion request to the OpenAI API with the given prompt and parameters."""
-        kwargs.update(
-            {
-                "model": self.model,
-                "temperature": self.temperature,
-                "top_p": self.top_p,
-                "n": 1,
-            }
-        )
+        kwargs.setdefault("model", self.model)
+        kwargs.setdefault("temperature", self.temperature)
+        kwargs.setdefault("top_p", self.top_p)
+        kwargs.setdefault("n", 1)
+
         response = await openai_complete(prompt, **kwargs)
         if "choices" not in response:
             raise ValueError(f"No choices in response: {response}")

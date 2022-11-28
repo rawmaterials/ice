@@ -5,8 +5,8 @@ from typing import TypeVar
 
 from structlog.stdlib import get_logger
 
-from ice.apis.openai import openai_complete
-from ice.apis.openai import TooLongRequestError
+from ice.agents.openai import OpenAIAgent
+from ice.agents.openai import TooLongRequestError
 from ice.recipe import recipe
 from ice.recipes.experiments_and_arms.types import MultipartReasoningPrompt
 from ice.recipes.experiments_and_arms.types import PassageWithReasoning
@@ -37,7 +37,7 @@ async def reasoning_sample(
     Returns:
         str: Generated reasoning.
     """
-    response = await openai_complete(
+    response = await OpenAIAgent().complete_with_full_response(
         prompt=prompt,
         temperature=temperature,
         cache_id=cache_id,
@@ -70,7 +70,7 @@ async def greedy_continuation(
         tuple[dict, T1]: OpenAI response and the extracted answer.
     """
     prompt = prompt_func(texts, helpfulness=helpfulness, reasoning=reasoning)
-    response = await openai_complete(
+    response = await OpenAIAgent().complete_with_full_response(
         prompt=prompt, logprobs=10, max_tokens=max_tokens, stop=None
     )
     return response, final_answer_processor(response)

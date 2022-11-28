@@ -7,8 +7,8 @@ import numpy as np
 from anyio import ExceptionGroup
 from structlog.stdlib import get_logger
 
-from ice.apis.openai import openai_complete
-from ice.apis.openai import TooLongRequestError
+from ice.agents.openai import OpenAIAgent
+from ice.agents.openai import TooLongRequestError
 from ice.paper import Paper
 from ice.recipe import recipe
 from ice.recipes.best_completion import best_completion
@@ -74,7 +74,7 @@ async def select(
         examples=examples,
     )
     try:
-        response = await openai_complete(
+        response = await OpenAIAgent().complete_with_full_response(
             prompt=prompt, max_tokens=0, logprobs=100, echo=True
         )
     except TooLongRequestError:

@@ -4,7 +4,7 @@ from functools import partial
 
 from structlog.stdlib import get_logger
 
-from ice.apis.openai import openai_complete
+from ice.agents.openai import OpenAIAgent
 from ice.recipe import recipe
 from ice.utils import map_async
 
@@ -27,19 +27,14 @@ async def completion_perplexity(
     if not completion[0].isspace():
         log.warning("Completion does not start with whitespace!", completion=completion)
 
-    response = await openai_complete(
+    response = await OpenAIAgent().complete_with_full_response(
         prompt=prompt + completion,
         max_tokens=0,
         logprobs=1,
         echo=True,
     )
 
-    choices = response.get("choices", [])
-
-    if not choices:
-        raise ValueError("No choices returned from OpenAI API")
-
-    logits = choices[0]["logprobs"]["token_logprobs"]
+    logits = response["choices"][0]["logprobs"]["token_logprobs"]
 
     tokens = choices[0]["logprobs"]["tokens"]
     completion_tokens: list[str] = []

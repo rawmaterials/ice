@@ -3,7 +3,7 @@ from itertools import count
 
 from tqdm import tqdm
 
-from ice.apis.openai import TooLongRequestError
+from ice.agents.openai import TooLongRequestError
 from ice.paper import Paper
 from ice.paper import Paragraph
 from ice.recipe import Recipe

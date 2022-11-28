@@ -3,7 +3,7 @@ from collections.abc import Sequence
 from functools import partial
 from itertools import chain
 
-from ice.apis.openai import TooLongRequestError
+from ice.agents.openai import TooLongRequestError
 from ice.metrics.gold_standards import get_gold_standard
 from ice.metrics.gold_standards import load_papers
 from ice.paper import Paper

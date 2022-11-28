@@ -5,7 +5,7 @@ from typing import Optional
 
 from structlog import get_logger
 
-from ice.apis.openai import openai_complete
+from ice.agents.openai import OpenAIAgent
 from ice.recipes.program_search.nodes.answer.types import Demonstration
 
 
@@ -31,12 +31,9 @@ async def answer_like_elicit_qa(
         excerpt=passage,
     )
 
-    response = await openai_complete(prompt, stop=None)
+    response = await OpenAIAgent().complete(prompt, stop=None)
 
-    choices = response.get("choices")
-
-    response_text = choices[0]["text"].strip()
-    answer = _process_instruct_answer(response_text)
+    answer = _process_instruct_answer(response)
 
     if answer is None:
         return "Not mentioned"

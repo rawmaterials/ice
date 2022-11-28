@@ -4,7 +4,7 @@ from typing import TypeVar
 
 from structlog.stdlib import get_logger
 
-from ice.apis.openai import TooLongRequestError
+from ice.agents.openai import TooLongRequestError
 from ice.recipe import recipe
 from ice.recipes.experiments_and_arms.recipes.reason_select_and_answer import (
     answer_with_best_reasoning,

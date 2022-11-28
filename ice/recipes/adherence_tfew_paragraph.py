@@ -11,7 +11,7 @@ from structlog.stdlib import get_logger
 from transformers.models.auto.tokenization_auto import AutoTokenizer
 from transformers.models.gpt2.tokenization_gpt2_fast import GPT2TokenizerFast
 
-from ice.apis.openai import openai_complete
+from ice.agents.openai import OpenAIAgent
 from ice.evaluation.evaluate_recipe_result import RecipeResult
 from ice.metrics.gold_standards import list_experiments
 from ice.paper import Paper
@@ -292,7 +292,7 @@ Here's all the the information in this paper about adherence, attrition, and com
 async def complete_with_cache_buster(
     prompt: str, temperature: float, max_tokens: int, top_p: float, stop, cache_id: int
 ):
-    return await openai_complete(
+    return await OpenAIAgent().complete_with_full_response(
         stop=stop,
         prompt=prompt,
         temperature=temperature,
@@ -568,7 +568,7 @@ async def intervention_classification_answer_with_reasoning(
     "Does this paragraph contain information about adherence, compliance, or attrition?"
     """
     cache_id  # unused
-    response = await openai_complete(
+    response = await OpenAIAgent().complete_with_full_response(
         prompt=intervention_classification_prompt(paragraph, intervention),
         temperature=temperature,
         max_tokens=657,
@@ -611,7 +611,7 @@ async def this_or_other_classification_answer_with_reasoning(
     asking, "Is this paragraph about adherence about a related work or
     the study this paper is reporting on?"
     """
-    response = await openai_complete(
+    response = await OpenAIAgent().complete_with_full_response(
         prompt=this_or_other_study_prompt(paragraph, intervention),
         temperature=temperature,
         max_tokens=768,
@@ -677,7 +677,7 @@ Conclusion: """.strip()
 async def zero_temp_final_classification(prompt: str):
     """Perform a final classification step using a reasoning
     selected from the sampled classifications."""
-    return await openai_complete(
+    return await OpenAIAgent().complete_with_full_response(
         prompt=prompt,
         stop=("\n"),
     )

@@ -2,7 +2,7 @@ from collections.abc import Sequence
 
 from structlog.stdlib import get_logger
 
-from ice.apis.openai import openai_complete
+from ice.agents.openai import OpenAIAgent
 from ice.formatter.multi import format_multi
 from ice.formatter.multi import stop
 from ice.formatter.transform.value import numbered_list
@@ -107,7 +107,7 @@ async def _get_reasoning(initial_prompt: str, completion: str):
         if not len(lines) == 1:
             raise ValueError("Unexpected response")
         new_prompt = initial_prompt + " " + lines[0].strip() + "\n\n" + "Final answer:"
-        new_completion = await openai_complete(
+        new_completion = await OpenAIAgent().complete_with_full_response(
             prompt=new_prompt, stop="\n\n---", max_tokens=200
         )
         log.warning(
@@ -129,7 +129,7 @@ async def demonstration_answer_with_reasoning(
     )
     max_tokens = 500
     while True:
-        completion = await openai_complete(
+        completion = await OpenAIAgent().complete_with_full_response(
             prompt=prompt,
             stop="\n\n---",
             max_tokens=max_tokens,
