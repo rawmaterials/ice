@@ -378,7 +378,7 @@ class PlaceboDialogs(Recipe):
         paragraph_infos = await map_async(
             paragraphs,
             lambda paragraph: self.analyze_paragraph(paragraph, experiment),
-            max_concurrency=10 if self.mode == "machine" else 1,
+            max_concurrency=self.max_concurrency(),
             show_progress_bar=True,
         )
 
