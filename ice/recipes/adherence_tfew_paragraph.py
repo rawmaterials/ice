@@ -302,6 +302,16 @@ async def complete_with_cache_buster(
     )
 
 
+def extract_completion(self, response: dict) -> str:
+    """Extract the answer text from the completion response."""
+    return response["choices"][0]["text"].strip()
+
+
+def extract_total_tokens(self, response: dict) -> str:
+    """Extract the total tokens from the completion response."""
+    return response["usage"]["total_tokens"]
+
+
 def remove_last_subsentence(text: str) -> str:
     sentences = split_sentences(text)
     if not sentences[-1].strip().endswith("."):
@@ -350,8 +360,8 @@ async def sample_generation_answer_with_reasoning(
         stop=("\nFourth", "\nFifth", "\nSixth", "\nFinally"),
         cache_id=cache_id,
     )
-    response_text = response["choices"][0]["text"]
-    token_usage = response["usage"]["total_tokens"]
+    response_text = extract_completion(response)
+    token_usage = extract_total_tokens(response)
     if (
         "Here's all the information in this paper about adherence, attrition, and compliance:"
         in response_text
@@ -374,8 +384,8 @@ async def sample_generation_answer_with_reasoning(
     return (
         AnswerWithReasoning(
             paragraph="\n\n".join(paragraphs),
-            reasoning=remove_last_subsentence(response_text.strip()),
-            answer=response_text.strip(),
+            reasoning=remove_last_subsentence(response_text),
+            answer=response_text,
             token_usage=token_usage,
         ),
         used_prompt_func,
@@ -445,12 +455,12 @@ async def final_answer_with_reasoning(
         stop=("\nFourth", "\nFifth", "\nSixth", "\nFinally"),
         cache_id=0,
     )
-    final_answer_text = final_answer["choices"][0]["text"]
+    final_answer_text = extract_completion(final_answer)
     return AnswerWithReasoning(
         paragraph="\n\n".join(paragraphs),
         reasoning=best_answer.reasoning,
         answer=remove_last_subsentence(final_answer_text),
-        token_usage=final_answer["usage"]["total_tokens"],
+        token_usage=extract_total_tokens(final_answer),
     )
 
 
@@ -576,8 +586,8 @@ async def intervention_classification_answer_with_reasoning(
         top_p=1,
         cache_id=cache_id,
     )
-    response_text = response["choices"][0]["text"]
-    token_usage = response["usage"]["total_tokens"]
+    response_text = extract_completion(response)
+    token_usage = extract_total_tokens(response)
     if "Conclusion: " in response_text:
         reasoning, answer_text = response_text.split("Conclusion:")
         return AnswerWithReasoning(
@@ -594,7 +604,7 @@ async def intervention_classification_answer_with_reasoning(
     print("Unexpected response:", response)
     return AnswerWithReasoning(
         paragraph=paragraph,
-        reasoning=response_text.strip(),
+        reasoning=response_text,
         answer="",
         token_usage=token_usage,
     )
@@ -619,8 +629,8 @@ async def this_or_other_classification_answer_with_reasoning(
         top_p=1,
         cache_id=cache_id,
     )
-    response_text = response["choices"][0]["text"]
-    token_usage = response["usage"]["total_tokens"]
+    response_text = extract_completion(response)
+    token_usage = extract_total_tokens(response)
     if "Conclusion: " in response_text:
         reasoning, answer_text = response_text.split("Conclusion:")
         return AnswerWithReasoning(
@@ -637,7 +647,7 @@ async def this_or_other_classification_answer_with_reasoning(
     print("Unexpected response:", response)
     return AnswerWithReasoning(
         paragraph=paragraph,
-        reasoning=response_text.strip(),
+        reasoning=response_text,
         answer="",
         token_usage=token_usage,
     )
@@ -737,12 +747,12 @@ async def adherence_paragraph_classification(
         )
     )
 
-    token_usage = zero_temp_answer["usage"]["total_tokens"]
+    token_usage = extract_total_tokens(zero_temp_answer)
 
     return AnswerWithReasoning(
         paragraph=paragraph,
         reasoning=best_reasoning.reasoning,
-        answer=zero_temp_answer["choices"][0]["text"].strip(),
+        answer=extract_completion(zero_temp_answer),
         token_usage=total_token_usage + token_usage,
     )
 
