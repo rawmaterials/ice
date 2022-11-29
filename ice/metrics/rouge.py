@@ -5,7 +5,7 @@ from anyio.to_thread import run_sync
 from pydantic import BaseModel
 from rouge_metric import PyRouge
 
-from ice.cache import diskcache
+from ice.caching.cache import diskcache
 from ice.metrics.base import Metric
 from ice.metrics.base import Sample
 

@@ -7,7 +7,7 @@ from itertools import islice
 from pydantic import BaseModel
 from pydantic import validator
 
-from ice.cache import diskcache
+from ice.caching.cache import diskcache
 from ice.paper import Paper
 from ice.paper import Paragraph
 from ice.paper import split_sentences

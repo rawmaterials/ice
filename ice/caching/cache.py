@@ -7,8 +7,8 @@ import inspect
 
 from pathlib import Path
 
+from ice.caching.sqlite_shelf import SQLiteShelf
 from ice.settings import CACHE_DIR
-from ice.sqlite_shelf import SQLiteShelf
 
 
 def diskcache(cache_dir: Path = CACHE_DIR):

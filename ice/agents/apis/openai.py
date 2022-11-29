@@ -11,7 +11,7 @@ from tenacity.retry import retry_if_exception
 from tenacity.retry import retry_if_exception_type
 from tenacity.wait import wait_random_exponential
 
-from ice.cache import diskcache
+from ice.caching.cache import diskcache
 from ice.settings import settings
 from ice.trace import add_fields
 from ice.trace import trace

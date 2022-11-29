@@ -9,7 +9,7 @@ import pandas as pd
 
 from structlog import get_logger
 
-from ice.cache import diskcache
+from ice.caching.cache import diskcache
 from ice.evaluation.utils import rouge_compare
 from ice.metrics.gold_standards import get_gold_standards
 from ice.metrics.gold_standards import list_experiments

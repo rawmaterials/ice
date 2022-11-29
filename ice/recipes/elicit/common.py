@@ -11,7 +11,7 @@ from tenacity import retry
 from tenacity import stop_after_attempt
 from tenacity import wait_random_exponential
 
-from ice.cache import diskcache
+from ice.caching.cache import diskcache
 from ice.utils import deep_merge
 
 

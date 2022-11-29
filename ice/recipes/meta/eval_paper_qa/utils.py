@@ -1,7 +1,7 @@
 from collections.abc import Callable
 from collections.abc import Sequence
 
-from ice.cache import diskcache
+from ice.caching.cache import diskcache
 from ice.metrics.rouge import matches
 from ice.paper import Paper
 from ice.recipes.meta.eval_paper_qa.types import PaperQaGoldStandard

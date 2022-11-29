@@ -1,7 +1,7 @@
 from ice.agents.base import Agent
 from ice.agents.base import Stop
+from ice.caching.sqlite_shelf import SQLiteShelf
 from ice.settings import CACHE_DIR
-from ice.sqlite_shelf import SQLiteShelf
 
 
 def get_cache_key(fn_name: str, input: str):

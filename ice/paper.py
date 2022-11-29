@@ -14,7 +14,7 @@ from pydantic import BaseModel
 from pydantic import Field
 from structlog.stdlib import get_logger
 
-from ice.cache import diskcache
+from ice.caching.cache import diskcache
 from ice.environment import env
 from ice.settings import OUGHT_ICE_DIR
 
