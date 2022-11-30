@@ -6,7 +6,8 @@ from typing import Type
 from ice.environment import env
 from ice.mode import Mode
 from ice.recipe import Recipe
-from ice.recipes import get_recipe_classes
+
+from recipes import get_recipe_classes
 
 
 def _is_filename(name: str) -> bool:

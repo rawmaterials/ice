@@ -6,8 +6,9 @@ import nest_asyncio
 import pytest
 
 from ice.recipe import Recipe
-from ice.recipes import get_recipe_classes
+
 from main import main_cli
+from recipes import get_recipe_classes
 
 
 nest_asyncio.apply()

@@ -17,11 +17,11 @@ fake = Faker()
 root_dir = Path(__file__).parent.parent
 
 recipe.all_recipes = []
-primer_recipes_dir = root_dir / "ice" / "recipes" / "primer"
+primer_recipes_dir = root_dir / "recipes" / "primer"
 for path in primer_recipes_dir.glob("**/*.py"):
     relative_path = path.relative_to(primer_recipes_dir)
     module_name = ".".join(relative_path.parts[:-1] + (relative_path.stem,))
-    import_module(f"ice.recipes.primer.{module_name}")
+    import_module(f"recipes.primer.{module_name}")
 
 paper = Paper.load(Path(root_dir / "papers" / "keenan-2018-tiny.txt"))
 

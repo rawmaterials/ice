@@ -5,7 +5,7 @@ import re
 from pathlib import Path
 
 root_dir = Path(__file__).parent.parent.parent
-primer_recipe_dir = root_dir / "ice" / "ice" / "recipes" / "primer"
+primer_recipe_dir = root_dir / "ice" / "recipes" / "primer"
 primer_dir = root_dir / "primer"
 
 pattern = re.compile(
