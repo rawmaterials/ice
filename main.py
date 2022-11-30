@@ -12,7 +12,7 @@ from ice.mode import Mode
 from ice.trace import enable_trace
 from ice.trace import trace
 
-from recipes.recipe_fetcher import get_recipe
+from recipes import get_recipe
 
 
 log = get_logger()

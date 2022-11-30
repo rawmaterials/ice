@@ -4,10 +4,7 @@ import os.path
 from typing import Type
 
 from ice.environment import env
-from ice.mode import Mode
 from ice.recipe import Recipe
-
-from recipes import get_recipe_classes
 
 
 def _is_filename(name: str) -> bool:
@@ -42,8 +39,10 @@ def _load_recipe_class_from_file(filename: str) -> Type[Recipe]:
     return recipe_class
 
 
-def _load_recipe_class_by_name(recipe_name: str) -> Type[Recipe]:
-    recipe_classes = get_recipe_classes()
+def _load_recipe_class_by_name(
+    recipe_name: str,
+    recipe_classes: list[Type[Recipe]],
+) -> Type[Recipe]:
     try:
         recipe_class = next(
             r
@@ -57,28 +56,25 @@ def _load_recipe_class_by_name(recipe_name: str) -> Type[Recipe]:
     return recipe_class
 
 
-async def _ask_user_for_recipe_class() -> Type[Recipe]:
-    recipe_classes = get_recipe_classes()
+async def _ask_user_for_recipe_class(
+    recipe_classes: list[Type[Recipe]],
+) -> Type[Recipe]:
     recipe_names = [r.__name__ for r in recipe_classes]
     recipe_name = await env().select("Recipe", recipe_names)
     recipe_class = [r for r in recipe_classes if r.__name__ == recipe_name][0]
     return recipe_class
 
 
-async def _select_recipe_class(*, recipe_name: str | None = None) -> Type[Recipe]:
+async def select_recipe_class(
+    *,
+    recipe_name: str | None = None,
+    recipe_classes: list[Type[Recipe]],
+) -> Type[Recipe]:
     if recipe_name is not None:
         if _is_filename(recipe_name):
             recipe_class = _load_recipe_class_from_file(recipe_name)
         else:
-            recipe_class = _load_recipe_class_by_name(recipe_name)
+            recipe_class = _load_recipe_class_by_name(recipe_name, recipe_classes)
     else:
-        recipe_class = await _ask_user_for_recipe_class()
+        recipe_class = await _ask_user_for_recipe_class(recipe_classes)
     return recipe_class
-
-
-async def get_recipe(recipe_name: str | None, mode: Mode) -> Recipe:
-    """
-    Get the recipe instance based on the user input or selection.
-    """
-    recipe_class = await _select_recipe_class(recipe_name=recipe_name)
-    return recipe_class(mode)

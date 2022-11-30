@@ -1,5 +1,6 @@
 from typing import Type
 
+from ice.mode import Mode
 from ice.recipe import Recipe
 
 from .adherence_keyword_baseline import AdherenceKeywordBaseline
@@ -22,6 +23,8 @@ from .placebo_tree import PlaceboTree
 from .program_search.nodes.decontext.decontextualize import PaperDecontext
 from .rank_paragraphs import RankParagraphs
 from .subrecipe_example import ExampleMetaRecipe
+
+from .recipe_fetcher import select_recipe_class
 
 
 def get_recipe_classes() -> list[Type[Recipe]]:
@@ -47,3 +50,14 @@ def get_recipe_classes() -> list[Type[Recipe]]:
         PlaceboTree,
         RankParagraphs,
     ]
+
+
+async def get_recipe(recipe_name: str | None, mode: Mode) -> Recipe:
+    """
+    Get the recipe instance based on the user input or selection.
+    """
+    recipe_class = await select_recipe_class(
+        recipe_name=recipe_name,
+        recipe_classes=get_recipe_classes(),
+    )
+    return recipe_class(mode)
