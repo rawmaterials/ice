@@ -7,11 +7,12 @@ import defopt
 from structlog.stdlib import get_logger
 
 from ice.main.recipe_executor import RecipeExecutor
-from ice.main.recipe_fetcher import get_recipe
 from ice.main.results_writer import ResultsWriter
 from ice.mode import Mode
 from ice.trace import enable_trace
 from ice.trace import trace
+
+from recipes.recipe_fetcher import get_recipe
 
 
 log = get_logger()
@@ -76,19 +77,19 @@ async def main(
     recipe = await get_recipe(recipe_name, mode)
 
     recipe_executor = RecipeExecutor(
-                          recipe=recipe,
-                          input_files=input_files,
-                          gold_standard_splits=gold_standard_splits,
-                          question_short_name=question_short_name,
-                      )
+        recipe=recipe,
+        input_files=input_files,
+        gold_standard_splits=gold_standard_splits,
+        question_short_name=question_short_name,
+    )
 
     # Run recipe over papers
     results = await recipe_executor.get_results(args)
 
     results_writer = ResultsWriter(
-                         recipe=recipe,
-                         results=results,
-                     )
+        recipe=recipe,
+        results=results,
+    )
 
     # Print results
     await results_writer.print_results(output_file)
