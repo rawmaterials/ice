@@ -4,8 +4,8 @@ from functools import partial
 from itertools import chain
 
 from ice.agents.openai import TooLongRequestError
-from ice.metrics.gold_standards import get_gold_standard
-from ice.metrics.gold_standards import load_papers
+from ice.evaluation.metrics.gold_standards import get_gold_standard
+from ice.evaluation.metrics.gold_standards import load_papers
 from ice.paper import Paper
 from ice.recipe import recipe
 from ice.recipes.consort_flow.baseline_elicit_answer import answer_like_elicit_qa

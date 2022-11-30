@@ -3,7 +3,7 @@ from pathlib import Path
 
 from ice import execution_context
 from ice.evaluation.evaluate_recipe_result import RecipeResult
-from ice.metrics.gold_standards import retrieve_gold_standards_df
+from ice.evaluation.metrics.gold_standards import retrieve_gold_standards_df
 from ice.paper import Paper
 from ice.recipe import Recipe
 from ice.utils import map_async

@@ -6,8 +6,8 @@ from pydantic import BaseModel
 from rouge_metric import PyRouge
 
 from ice.caching.cache import diskcache
-from ice.metrics.base import Metric
-from ice.metrics.base import Sample
+from ice.evaluation.metrics.base import Metric
+from ice.evaluation.metrics.base import Sample
 
 
 class _RougeScore(BaseModel):

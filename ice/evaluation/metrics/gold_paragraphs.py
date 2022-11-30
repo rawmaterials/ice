@@ -11,8 +11,8 @@ from structlog import get_logger
 
 from ice.caching.cache import diskcache
 from ice.evaluation.utils import rouge_compare
-from ice.metrics.gold_standards import get_gold_standards
-from ice.metrics.gold_standards import list_experiments
+from ice.evaluation.metrics.gold_standards import get_gold_standards
+from ice.evaluation.metrics.gold_standards import list_experiments
 from ice.paper import get_paper_paths
 from ice.paper import Paper
 from ice.paper import Paragraph

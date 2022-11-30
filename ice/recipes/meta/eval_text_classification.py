@@ -11,7 +11,7 @@ from sklearn.metrics import precision_recall_curve
 from sklearn.metrics import PrecisionRecallDisplay
 from sklearn.metrics import roc_auc_score
 
-from ice.metrics.rouge import matches
+from ice.evaluation.metrics.rouge import matches
 
 
 @dataclass(frozen=True)

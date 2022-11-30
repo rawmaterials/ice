@@ -13,7 +13,7 @@ from transformers.models.gpt2.tokenization_gpt2_fast import GPT2TokenizerFast
 
 from ice.agents.openai import OpenAIAgent
 from ice.evaluation.evaluate_recipe_result import RecipeResult
-from ice.metrics.gold_standards import list_experiments
+from ice.evaluation.metrics.gold_standards import list_experiments
 from ice.paper import Paper
 from ice.paper import Paragraph
 from ice.paper import split_sentences

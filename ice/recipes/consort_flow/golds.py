@@ -6,10 +6,10 @@ from pathlib import Path
 from pydantic import BaseModel
 from tqdm import tqdm
 
-from ice.metrics.gold_standards import get_gold_standard
-from ice.metrics.gold_standards import get_gold_standards
-from ice.metrics.gold_standards import GoldStandard
-from ice.metrics.gold_standards import GoldStandardSplit
+from ice.evaluation.metrics.gold_standards import get_gold_standard
+from ice.evaluation.metrics.gold_standards import get_gold_standards
+from ice.evaluation.metrics.gold_standards import GoldStandard
+from ice.evaluation.metrics.gold_standards import GoldStandardSplit
 from ice.paper import Paper
 from ice.recipes.consort_flow.types import ConsortFlow
 from ice.recipes.consort_flow.types import SampleSize

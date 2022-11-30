@@ -5,8 +5,8 @@ import httpx
 
 from pydantic import BaseModel
 
-from ice.metrics.base import Metric
-from ice.metrics.base import Sample
+from ice.evaluation.metrics.base import Metric
+from ice.evaluation.metrics.base import Sample
 from ice.settings import settings
 from ice.utils import map_async
 

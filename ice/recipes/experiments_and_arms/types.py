@@ -12,7 +12,7 @@ from pydantic import root_validator
 from pydantic import validator
 from pydantic.generics import GenericModel
 
-from ice.metrics.gold_standards import ParsedGoldStandardBase
+from ice.evaluation.metrics.gold_standards import ParsedGoldStandardBase
 
 
 T = TypeVar("T")

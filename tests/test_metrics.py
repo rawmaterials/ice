@@ -2,11 +2,11 @@ import numpy as np
 
 from pytest import mark
 
-from ice.metrics.base import reduce_scores_dict
-from ice.metrics.base import Sample
-from ice.metrics.gold_paragraphs import get_gold_paragraph_df
-from ice.metrics.nubia import Nubia
-from ice.metrics.rouge import Rouge
+from ice.evaluation.metrics.base import reduce_scores_dict
+from ice.evaluation.metrics.base import Sample
+from ice.evaluation.metrics.gold_paragraphs import get_gold_paragraph_df
+from ice.evaluation.metrics.nubia import Nubia
+from ice.evaluation.metrics.rouge import Rouge
 
 
 def test_reduce_scores_to_single_value():

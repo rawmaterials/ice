@@ -1,10 +1,10 @@
 from collections.abc import Sequence
 from datetime import datetime
 
-from ice.metrics.base import reduce_scores_dict
-from ice.metrics.base import Sample
-from ice.metrics.rouge import Rouge
-from ice.metrics.rouge import RougeResult
+from ice.evaluation.metrics.base import reduce_scores_dict
+from ice.evaluation.metrics.base import Sample
+from ice.evaluation.metrics.rouge import Rouge
+from ice.evaluation.metrics.rouge import RougeResult
 from ice.settings import OUGHT_ICE_DIR
 
 CSVS_PATH = OUGHT_ICE_DIR / "evaluation_csvs/"
