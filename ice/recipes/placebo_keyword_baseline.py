@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import Literal
 
 from ice.evaluation.evaluate_recipe_result import RecipeResult
-from ice.evaluation.metrics.gold_standards import list_experiments
+from ice.evaluation.gold_standards import list_experiments
 from ice.paper import Paper
 from ice.recipe import Recipe
 

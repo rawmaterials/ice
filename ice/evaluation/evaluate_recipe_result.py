@@ -4,9 +4,9 @@ from statistics import mean
 
 from pydantic import BaseModel
 
+from ice.evaluation.gold_standards import get_gold_standard
+from ice.evaluation.gold_standards import GoldStandard
 from ice.evaluation.utils import rouge_compare
-from ice.evaluation.metrics.gold_standards import get_gold_standard
-from ice.evaluation.metrics.gold_standards import GoldStandard
 from ice.settings import settings
 from ice.utils import map_async
 

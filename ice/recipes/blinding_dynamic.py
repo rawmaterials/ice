@@ -36,9 +36,9 @@ from rich.panel import Panel
 from thefuzz import fuzz
 
 from ice.evaluation.evaluate_recipe_result import RecipeResult
-from ice.evaluation.metrics.gold_standards import get_gold_standards
-from ice.evaluation.metrics.gold_standards import GoldStandard
-from ice.evaluation.metrics.gold_standards import list_experiments
+from ice.evaluation.gold_standards import get_gold_standards
+from ice.evaluation.gold_standards import GoldStandard
+from ice.evaluation.gold_standards import list_experiments
 from ice.paper import Paper
 from ice.paper import Paragraph
 from ice.recipe import Recipe

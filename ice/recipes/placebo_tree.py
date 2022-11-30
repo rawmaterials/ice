@@ -6,7 +6,7 @@ from rich.pretty import pprint
 from structlog.stdlib import get_logger
 
 from ice.evaluation.evaluate_recipe_result import RecipeResult
-from ice.evaluation.metrics.gold_standards import list_experiments
+from ice.evaluation.gold_standards import list_experiments
 from ice.paper import get_full_document_id
 from ice.paper import Paper
 from ice.paper import Paragraph

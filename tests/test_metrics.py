@@ -2,9 +2,9 @@ import numpy as np
 
 from pytest import mark
 
+from ice.evaluation.gold_standards.gold_paragraphs import get_gold_paragraph_df
 from ice.evaluation.metrics.base import reduce_scores_dict
 from ice.evaluation.metrics.base import Sample
-from ice.evaluation.metrics.gold_paragraphs import get_gold_paragraph_df
 from ice.evaluation.metrics.nubia import Nubia
 from ice.evaluation.metrics.rouge import Rouge
 
