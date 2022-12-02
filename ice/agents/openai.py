@@ -99,7 +99,7 @@ class OpenAIAgent(Agent):
             self._print_markdown(prompt)
         response = await self._complete(prompt, stop=stop, **kwargs)
         if verbose:
-            self._print_markdown(_extract_completion(response))
+            self._print_markdown(self._extract_completion(response))
         return response
 
     async def _complete(self, prompt, **kwargs) -> dict:

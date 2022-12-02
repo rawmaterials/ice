@@ -32,7 +32,7 @@ async def answer_like_elicit_qa(
         excerpt=passage,
     )
 
-    response = await OpenAIAgent().complete(prompt, stop=None)
+    response = await OpenAIAgent().complete(prompt=prompt, stop=None)
 
     answer = _process_instruct_answer(response)
 

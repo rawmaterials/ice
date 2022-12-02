@@ -302,12 +302,12 @@ async def complete_with_cache_buster(
     )
 
 
-def extract_completion(self, response: dict) -> str:
+def extract_completion(response: dict) -> str:
     """Extract the answer text from the completion response."""
     return response["choices"][0]["text"].strip()
 
 
-def extract_total_tokens(self, response: dict) -> str:
+def extract_total_tokens(response: dict) -> str:
     """Extract the total tokens from the completion response."""
     return response["usage"]["total_tokens"]
 

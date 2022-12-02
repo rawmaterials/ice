@@ -21,7 +21,7 @@ async def quick_evaluate(
         tuple[str, str]: The evaluation and the letter grade.
     """
     prompt, stop_seq = make_quick_eval_prompt(gs, generated)
-    response = await OpenAIAgent().complete(prompt, stop=stop_seq)
+    response = await OpenAIAgent().complete(prompt=prompt, stop=stop_seq)
     return response, get_grade(response)
 
 
