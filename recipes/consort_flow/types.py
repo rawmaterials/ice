@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from pydantic import root_validator
 from pydantic import validator
 
-from ice.evaluation.metrics.gold_standards import ParsedGoldStandardBase
+from ice.evaluation.gold_standards import ParsedGoldStandardBase
 
 NOT_YET_COLLECTED = "Gold standard not yet collected"
 

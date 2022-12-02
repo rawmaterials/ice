@@ -1,7 +1,7 @@
 from collections.abc import Sequence
 
-from ice.evaluation.metrics.gold_standards import get_gold_standard
-from ice.evaluation.metrics.gold_standards import GoldStandard
+from ice.evaluation.gold_standards import get_gold_standard
+from ice.evaluation.gold_standards import GoldStandard
 
 from recipes.experiments_and_arms.types import ExperimentsArms
 

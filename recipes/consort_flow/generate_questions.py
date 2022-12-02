@@ -4,9 +4,9 @@ from functools import partial
 from typing import Type
 
 from ice.formatter.transform.value import numbered_list
-from ice.evaluation.metrics.gold_standards import generate_papers_and_golds
-from ice.evaluation.metrics.gold_standards import GoldStandard
-from ice.evaluation.metrics.gold_standards import ParsedGoldStandardType
+from ice.evaluation.gold_standards import generate_papers_and_golds
+from ice.evaluation.gold_standards import GoldStandard
+from ice.evaluation.gold_standards import ParsedGoldStandardType
 from ice.paper import Paper
 
 from recipes.consort_flow.types import ConsortFlow
